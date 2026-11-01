@@ -44,7 +44,20 @@ catalog_items = [
     ("holiday-throw-pillow-covers", "Festive Holiday Snowflake Throw Pillow Covers (Set of 4)", "Christmas & Holiday", "USAdrop", 5.00, 18.99, "USA-XMAS-PIL", 180, "seasonal,christmas,decor"),
     ("funny-ugly-christmas-sweater", "Novelty Festive Ugly Christmas Sweater", "Christmas & Holiday", "Trendsi", 10.50, 31.99, "TRN-XMAS-SWTR", 120, "seasonal,christmas,apparel"),
     ("mini-desktop-christmas-tree", "Mini Desktop Christmas Tree with Lights & Ornaments", "Christmas & Holiday", "CJ-Dropshipping", 4.50, 17.99, "CJ-XMAS-TREE", 140, "seasonal,christmas,decor"),
-    ("holiday-themed-kitchen-apron", "Festive Christmas Red Kitchen Baking Apron", "Christmas & Holiday", "EPROLO", 3.00, 12.99, "EP-XMAS-APRON", 200, "seasonal,christmas,kitchen")
+    ("holiday-themed-kitchen-apron", "Festive Christmas Red Kitchen Baking Apron", "Christmas & Holiday", "EPROLO", 3.00, 12.99, "EP-XMAS-APRON", 200, "seasonal,christmas,kitchen"),
+
+    # --- 8. Additional product rows requested for the catalog ---
+    ("trendsi-cozy-fleece-jogger", "Cozy High-Waist Fleece Jogger Pants", "Apparel & Loungewear", "Trendsi", 7.80, 24.99, "TRN-JOG-FLL", 150, "apparel,loungewear,womens"),
+    ("trendsi-oversized-crew-pullover", "Oversized Everyday Heavyweight Crewneck Pullover", "Apparel & Loungewear", "Trendsi", 9.20, 29.99, "TRN-CREW-OVRS", 120, "apparel,loungewear,unisex"),
+    ("trendsi-ribbed-seamless-leggings", "High-Support Ribbed Seamless Athletic Leggings", "Apparel & Loungewear", "Trendsi", 6.50, 21.99, "TRN-LEG-RBB", 200, "apparel,activewear,womens"),
+    ("trendsi-premium-zip-hoodie", "Full-Zip Heavyweight Everyday Hoodie", "Apparel & Loungewear", "Trendsi", 12.50, 38.99, "TRN-HOOD-ZIP", 100, "apparel,outerwear,unisex"),
+    ("trendsi-cotton-blend-lounge-shorts", "Relaxed Cotton-Blend Everyday Lounge Shorts", "Apparel & Loungewear", "Trendsi", 5.10, 18.99, "TRN-SHT-LNG", 180, "apparel,loungewear,summer"),
+    ("usadrop-heavy-fleece-sweatpants", "Heavyweight Thermal Fleece Men's Sweatpants", "Apparel & Basics", "USAdrop", 8.50, 27.99, "USA-SWPT-HVY", 140, "apparel,sweatpants,mens"),
+    ("usadrop-sherpa-lined-hoodie", "Men's Heavyweight Sherpa-Lined Winter Hoodie", "Apparel & Outerwear", "USAdrop", 16.50, 49.99, "USA-HOOD-SHRP", 90, "apparel,winter,mens"),
+    ("usadrop-thermal-winter-gloves", "Touchscreen-Compatible Thermal Winter Gloves", "Accessories", "USAdrop", 3.20, 14.99, "USA-GLV-THRM", 250, "accessories,winter,tech"),
+    ("wireless-bluetooth-earbuds-anc", "Active Noise Cancelling Wireless Bluetooth Earbuds", "Electronics", "CJ-Dropshipping", 8.50, 29.99, "CJ-TECH-EARBUD", 200, "electronics,audio,holiday"),
+    ("led-smart-tv-43inch", "43-Inch 4K UHD Smart LED Television", "Electronics & Home", "USAdrop", 125.00, 299.99, "USA-TV-43INCH", 45, "electronics,tv,holiday,high-ticket"),
+    ("premium-wireless-earbuds-pro", "Pro-Series True Wireless Earbuds with Charging Case", "Electronics", "USAdrop", 11.00, 39.99, "USA-TECH-PROMB", 180, "electronics,audio,holiday"),
 ]
 
 # Expand list precisely to a robust 500-item inventory payload

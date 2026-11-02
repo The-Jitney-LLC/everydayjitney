@@ -194,5 +194,54 @@
             </div>
         </section>
     </main>
+
+    <script>
+        (function() {
+            let totalActiveTime = 0;
+            let lastActiveTime = Date.now();
+            let isIdle = false;
+
+            function resetIdleTimer() {
+                if (isIdle) {
+                    lastActiveTime = Date.now();
+                    isIdle = false;
+                } else {
+                    totalActiveTime += Date.now() - lastActiveTime;
+                    lastActiveTime = Date.now();
+                }
+            }
+
+            const handleActivity = () => resetIdleTimer();
+
+            window.addEventListener('mousemove', handleActivity);
+            window.addEventListener('keypress', handleActivity);
+            window.addEventListener('scroll', handleActivity);
+            window.addEventListener('click', handleActivity);
+
+            setInterval(function() {
+                if (Date.now() - lastActiveTime > 60000) {
+                    isIdle = true;
+                } else {
+                    totalActiveTime += Date.now() - lastActiveTime;
+                    lastActiveTime = Date.now();
+                }
+            }, 10000);
+
+            window.addEventListener('beforeunload', function() {
+                if (!isIdle) {
+                    totalActiveTime += Date.now() - lastActiveTime;
+                }
+
+                const sessionData = JSON.stringify({
+                    event: 'visitor_session_end',
+                    page: 'the_jitney_storefront_maintenance',
+                    duration_seconds: Math.round(totalActiveTime / 1000),
+                    timestamp: new Date().toISOString()
+                });
+
+                navigator.sendBeacon('https://hook.us2.make.com/11n6hwxmgsb3wophsx2phn300d1h3xan', sessionData);
+            });
+        })();
+    </script>
 </body>
 </html>

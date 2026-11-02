@@ -1,7 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>The Jitney</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Jitney | Sovereign Storefront</title>
+    <style>
+        :root { --bg-color: #f9f9fb; --card-bg: #ffffff; --text-color: #111; --accent: #0070f3; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; }
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { margin: 0 0 10px 0; font-size: 2rem; }
+        .search-bar { width: 100%; max-width: 500px; padding: 12px 16px; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 25px; display: block; margin-left: auto; margin-right: auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background: var(--card-bg); border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; }
+        .card h3 { font-size: 1.1rem; margin: 0 0 10px 0; color: #333; }
+        .category { font-size: 0.8rem; text-transform: uppercase; color: #666; margin-bottom: 8px; font-weight: 600; }
+        .price { font-size: 1.25rem; font-weight: bold; color: var(--accent); margin-bottom: 12px; }
+        .buy-btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; }
+        .buy-btn:hover { background: #0051d5; }
+    </style>
     <script>
     (function() {
         let startTime = Date.now();
@@ -49,7 +65,105 @@
     </script>
 </head>
 <body>
-    <h1>The Jitney</h1>
-    <p>Website coming soon.</p>
+
+    <header>
+        <h1>The Jitney</h1>
+        <p>Independent Sovereign Storefront</p>
+    </header>
+
+    <input type="text" id="searchBox" class="search-bar" placeholder="Search catalog (e.g., earbuds, cookware, tv, apparel)..." onkeyup="filterCatalog()">
+
+    <div id="catalogGrid" class="grid">
+        <!-- Catalog items dynamically loaded from master_catalog_v1.csv -->
+    </div>
+
+    <script>
+        let catalogData = [];
+
+        // Fetch master CSV catalog directly from the repository
+        fetch('master_catalog_v1.csv')
+            .then(response => response.text())
+            .then(csvText => {
+                catalogData = parseCSV(csvText);
+                displayCatalog(catalogData);
+            })
+            .catch(err => console.error('Error loading catalog data:', err));
+
+        function parseCSV(text) {
+            const lines = text.split('\n');
+            const result = [];
+            const headers = lines[0].split(',');
+
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+                const currentLine = lines[i].split(',');
+                if (currentLine.length >= headers.length) {
+                    result.push({
+                        handle: currentLine[0],
+                        title: currentLine[1],
+                        category: currentLine[2],
+                        vendor: currentLine[3],
+                        cost: currentLine[4],
+                        price: currentLine[5],
+                        sku: currentLine[6],
+                        qty: currentLine[7],
+                        tags: currentLine[8]
+                    });
+                }
+            }
+            return result;
+        }
+
+        function displayCatalog(items) {
+            const grid = document.getElementById('catalogGrid');
+            grid.innerHTML = '';
+            
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div>
+                        <div class="category">${item.category}</div>
+                        <h3>${item.title}</h3>
+                    </div>
+                    <div>
+                        <div class="price">$${item.price}</div>
+                        <a href="#" class="buy-btn" onclick="triggerCheckout('${item.sku}', '${item.price}')">Instant Buy</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCatalog() {
+            const query = document.getElementById('searchBox'].value.toLowerCase();
+            const filtered = catalogData.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.category.toLowerCase().includes(query) || 
+                item.tags.toLowerCase().includes(query)
+            );
+            displayCatalog(filtered);
+        }
+
+        async function triggerCheckout(sku, price) {
+            const payload = {
+                sku: sku,
+                price: price,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                await fetch('https://hook.us2.make.com/11n6hwxmgsb3wophsx2phn300d1h3xan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                alert(`Order for SKU ${sku} ($${price}) routed successfully to Make.com backend!`);
+            } catch (error) {
+                console.error('Webhook error:', error);
+                alert('Checkout routing encountered an issue, but your session is logged.');
+            }
+        }
+    </script>
 </body>
 </html>

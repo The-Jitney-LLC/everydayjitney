@@ -5,82 +5,221 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Jitney | Sovereign Storefront</title>
     <style>
-        :root { --bg-color: #f9f9fb; --card-bg: #ffffff; --text-color: #111; --accent: #0070f3; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; }
-        header { text-align: center; margin-bottom: 30px; }
-        h1 { margin: 0 0 10px 0; font-size: 2.2rem; font-weight: 800; }
-        p { color: #555; }
-        .search-bar { width: 100%; max-width: 600px; padding: 14px 18px; font-size: 1.1rem; border: 1px solid #ccd0d5; border-radius: 8px; margin-bottom: 30px; display: block; margin-left: auto; margin-right: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .card { background: var(--card-bg); border-radius: 10px; padding: 18px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #eaeaea; }
-        .card h3 { font-size: 1.1rem; margin: 0 0 10px 0; color: #111; line-height: 1.4; }
-        .category { font-size: 0.75rem; text-transform: uppercase; color: #0070f3; margin-bottom: 8px; font-weight: 700; letter-spacing: 0.5px; }
-        .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
-        .price { font-size: 1.3rem; font-weight: bold; color: #111; }
-        .buy-btn { background: var(--accent); color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; transition: background 0.2s; }
-        .buy-btn:hover { background: #0051d5; }
-    </style>
-    <script>
-    (function() {
-        let startTime = Date.now();
-        let totalActiveTime = 0;
-        let lastActiveTime = Date.now();
-        let isIdle = false;
-
-        function resetIdleTimer() {
-            if (isIdle) {
-                lastActiveTime = Date.now();
-                isIdle = false;
-            } else {
-                totalActiveTime += Date.now() - lastActiveTime;
-                lastActiveTime = Date.now();
-            }
+        :root {
+            --bg-color: #f5f7fb;
+            --card-bg: #ffffff;
+            --text-color: #111827;
+            --muted: #5b6473;
+            --accent: #0070f3;
+            --accent-dark: #0058c8;
+            --border: #e5e7eb;
+            --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
         }
 
-        window.addEventListener('mousemove', resetIdleTimer);
-        window.addEventListener('keypress', resetIdleTimer);
-        window.addEventListener('scroll', resetIdleTimer);
-        window.addEventListener('click', resetIdleTimer);
+        * { box-sizing: border-box; }
 
-        setInterval(function() {
-            if (Date.now() - lastActiveTime > 60000) {
-                isIdle = true;
-            } else {
-                totalActiveTime += Date.now() - lastActiveTime;
-                lastActiveTime = Date.now();
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(180deg, #f9fafb 0%, #eef3fb 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 26px;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            font-size: clamp(2.2rem, 4vw, 3.1rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+        }
+
+        .subtitle {
+            margin: 0;
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        .search-wrap {
+            max-width: 680px;
+            margin: 0 auto 18px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px 18px;
+            font-size: 1.05rem;
+            border: 1px solid #d8dde6;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            color: var(--text-color);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: rgba(0, 112, 243, 0.4);
+            box-shadow: 0 0 0 4px rgba(0, 112, 243, 0.1);
+        }
+
+        .catalog-meta {
+            max-width: 1200px;
+            margin: 0 auto 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            color: var(--muted);
+            font-size: 0.96rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 28px rgba(15, 23, 42, 0.1);
+        }
+
+        .category {
+            display: inline-block;
+            margin-bottom: 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 1.08rem;
+            line-height: 1.45;
+            color: var(--text-color);
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .price {
+            font-size: 1.32rem;
+            font-weight: 800;
+            color: var(--text-color);
+        }
+
+        .buy-btn {
+            background: var(--accent);
+            border: none;
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .buy-btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-1px);
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px dashed #d7dbe2;
+            border-radius: 14px;
+            padding: 28px 18px;
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                padding-top: 30px;
             }
-        }, 10000);
 
-        window.addEventListener('beforeunload', function() {
-            if (!isIdle) {
-                totalActiveTime += Date.now() - lastActiveTime;
+            .catalog-meta {
+                flex-direction: column;
+                align-items: flex-start;
             }
-            let sessionData = JSON.stringify({
-                event: "visitor_session_end",
-                duration_seconds: Math.round(totalActiveTime / 1000),
-                timestamp: new Date().toISOString()
-            });
 
-            navigator.sendBeacon("https://hook.us2.make.com/11n6hwxmgsb3wophsx2phn300d1h3xan", sessionData);
-        });
-    })();
-    </script>
+            .price-row {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .buy-btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="page">
+        <header>
+            <h1>The Jitney</h1>
+            <p class="subtitle">Independent Sovereign Storefront & Catalog</p>
+        </header>
 
-    <header>
-        <h1>The Jitney</h1>
-        <p>Independent Sovereign Storefront & Catalog</p>
-    </header>
+        <div class="search-wrap">
+            <input
+                type="search"
+                id="searchBox"
+                class="search-bar"
+                aria-label="Search catalog"
+                placeholder="Search 500+ items (e.g., earbuds, cookware, tv, apparel)..."
+            >
+        </div>
 
-    <input type="text" id="searchBox" class="search-bar" placeholder="Search 500+ items (e.g., earbuds, cookware, tv, apparel)..." onkeyup="filterCatalog()">
+        <div class="catalog-meta">
+            <span id="catalogCount">0 items</span>
+            <span id="catalogStatus">Showing all products</span>
+        </div>
 
-    <div id="catalogGrid" class="grid">
-        <!-- Products load dynamically -->
+        <div id="catalogGrid" class="grid" aria-live="polite"></div>
     </div>
 
     <script>
-        // Embedded sovereign product catalog dataset
         const catalogData = [
             { handle: "tempered-glass-ip15", title: "Tempered Glass Screen Protector - iPhone 15", category: "Cell Phone Accessories", vendor: "CJ-Dropshipping", price: "7.99", sku: "CJ-SCR-IP15", tags: "tech, phone, accessory" },
             { handle: "tempered-glass-s24", title: "Tempered Glass Screen Protector - Samsung S24", category: "Cell Phone Accessories", vendor: "CJ-Dropshipping", price: "7.99", sku: "CJ-SCR-S24", tags: "tech, phone, accessory" },
@@ -99,65 +238,111 @@
             { handle: "usadrop-thermal-winter-gloves", title: "Touchscreen-Compatible Thermal Winter Gloves", category: "Accessories", vendor: "USAdrop", price: "14.99", sku: "USA-GLV-THRM", tags: "accessories, winter, tech" }
         ];
 
+        const catalogGrid = document.getElementById('catalogGrid');
+        const catalogCount = document.getElementById('catalogCount');
+        const catalogStatus = document.getElementById('catalogStatus');
+        const searchBox = document.getElementById('searchBox');
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
         function displayCatalog(items) {
-            const grid = document.getElementById('catalogGrid');
-            grid.innerHTML = '';
-            
+            catalogGrid.innerHTML = '';
+
             if (items.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #777;">No products found matching your search.</p>';
+                const emptyState = document.createElement('div');
+                emptyState.className = 'empty-state';
+                emptyState.textContent = 'No products found matching your search.';
+                catalogGrid.appendChild(emptyState);
+                catalogCount.textContent = '0 items';
+                catalogStatus.textContent = 'No matches found';
                 return;
             }
 
-            items.forEach(item => {
-                const card = document.createElement('div');
+            items.forEach((item) => {
+                const card = document.createElement('article');
                 card.className = 'card';
-                card.innerHTML = `
-                    <div>
-                        <div class="category">${item.category}</div>
-                        <h3>${item.title}</h3>
-                    </div>
-                    <div class="price-row">
-                        <div class="price">$${item.price}</div>
-                        <a href="#" class="buy-btn" onclick="triggerCheckout('${item.sku}', '${item.price}', '${item.title.replace(/'/g, "")}')">Instant Buy</a>
-                    </div>
-                `;
-                grid.appendChild(card);
+
+                const category = document.createElement('div');
+                category.className = 'category';
+                category.textContent = item.category;
+
+                const title = document.createElement('h3');
+                title.textContent = item.title;
+
+                const priceRow = document.createElement('div');
+                priceRow.className = 'price-row';
+
+                const price = document.createElement('div');
+                price.className = 'price';
+                price.textContent = `$${item.price}`;
+
+                const buyButton = document.createElement('button');
+                buyButton.type = 'button';
+                buyButton.className = 'buy-btn';
+                buyButton.textContent = 'Instant Buy';
+
+                buyButton.addEventListener('click', async () => {
+                    const payload = {
+                        sku: item.sku,
+                        price: item.price,
+                        title: item.title,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    try {
+                        await fetch('https://hook.us2.make.com/11n6hwxmgsb3wophsx2phn300d1h3xan', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        alert(`Order for "${item.title}" ($${item.price}) routed successfully to your Make.com backend!`);
+                    } catch (error) {
+                        console.error('Webhook error:', error);
+                        alert('Order payload transmitted to sovereign pipeline.');
+                    }
+                });
+
+                priceRow.appendChild(price);
+                priceRow.appendChild(buyButton);
+
+                card.appendChild(category);
+                card.appendChild(title);
+                card.appendChild(priceRow);
+                catalogGrid.appendChild(card);
             });
+
+            const itemLabel = items.length === 1 ? 'item' : 'items';
+            catalogCount.textContent = `${items.length} ${itemLabel}`;
+            catalogStatus.textContent = searchBox.value.trim()
+                ? `Filtered by "${searchBox.value.trim()}"`
+                : 'Showing all products';
         }
 
         function filterCatalog() {
-            const query = document.getElementById('searchBox').value.toLowerCase();
-            const filtered = catalogData.filter(item => 
-                item.title.toLowerCase().includes(query) || 
-                item.category.toLowerCase().includes(query) || 
-                item.tags.toLowerCase().includes(query)
-            );
+            const query = searchBox.value.trim().toLowerCase();
+            const filtered = catalogData.filter((item) => {
+                const searchableText = [
+                    item.title,
+                    item.category,
+                    item.tags,
+                    item.vendor,
+                    item.sku
+                ].join(' ').toLowerCase();
+
+                return searchableText.includes(query);
+            });
+
             displayCatalog(filtered);
         }
 
-        async function triggerCheckout(sku, price, title) {
-            event.preventDefault();
-            const payload = {
-                sku: sku,
-                price: price,
-                title: title,
-                timestamp: new Date().toISOString()
-            };
-
-            try {
-                await fetch('https://hook.us2.make.com/11n6hwxmgsb3wophsx2phn300d1h3xan', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                alert(`Order for "${title}" ($${price}) routed successfully to your Make.com backend!`);
-            } catch (error) {
-                console.error('Webhook error:', error);
-                alert('Order payload transmitted to sovereign pipeline.');
-            }
-        }
-
-        // Initial render on page load
+        searchBox.addEventListener('input', filterCatalog);
         displayCatalog(catalogData);
     </script>
 </body>

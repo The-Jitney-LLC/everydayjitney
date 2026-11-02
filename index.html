@@ -6,176 +6,309 @@
     <title>The Jitney | Sovereign Storefront</title>
     <style>
         :root {
-            --bg-color: #f5f7fb;
-            --card-bg: #ffffff;
-            --text-color: #111827;
-            --muted: #5b6473;
-            --accent: #0070f3;
-            --accent-dark: #0058c8;
-            --border: #e5e7eb;
-            --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+            --bg: #0c0f14;
+            --bg-alt: #121821;
+            --panel: rgba(20, 25, 34, 0.9);
+            --panel-soft: rgba(29, 37, 48, 0.92);
+            --card: rgba(18, 23, 31, 0.95);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text: #edf2ff;
+            --muted: #a7b2c7;
+            --accent: #d4af66;
+            --accent-strong: #f2d38b;
+            --accent-soft: rgba(212, 175, 102, 0.18);
+            --shadow: 0 20px 45px rgba(0, 0, 0, 0.42);
+            --glow: 0 0 0 1px rgba(212, 175, 102, 0.22), 0 0 26px rgba(212, 175, 102, 0.12);
+        }
+
+        body.light-mode {
+            --bg: #f4f0ea;
+            --bg-alt: #efe7dc;
+            --panel: rgba(255, 255, 255, 0.78);
+            --panel-soft: rgba(255, 255, 255, 0.9);
+            --card: rgba(255, 255, 255, 0.95);
+            --card-border: rgba(123, 101, 76, 0.15);
+            --text: #1a1a1a;
+            --muted: #5d5a55;
+            --accent: #8b6a3a;
+            --accent-strong: #b48748;
+            --accent-soft: rgba(139, 106, 58, 0.12);
+            --shadow: 0 16px 40px rgba(52, 39, 24, 0.12);
+            --glow: 0 0 0 1px rgba(139, 106, 58, 0.14), 0 0 24px rgba(139, 106, 58, 0.08);
         }
 
         * { box-sizing: border-box; }
 
         html, body {
             margin: 0;
-            padding: 0;
+            min-height: 100%;
+            background:
+                radial-gradient(circle at top left, rgba(212, 175, 102, 0.18), transparent 28%),
+                linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(180deg, #f9fafb 0%, #eef3fb 100%);
-            color: var(--text-color);
             min-height: 100vh;
+            transition: background 0.25s ease, color 0.25s ease;
         }
 
         .page {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 40px 20px 80px;
+            padding: 40px 22px 80px;
         }
 
-        header {
-            text-align: center;
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
             margin-bottom: 26px;
         }
 
+        .brand-block {
+            text-align: left;
+        }
+
+        .brand-tag {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            border: 1px solid rgba(212, 175, 102, 0.2);
+            color: var(--accent-strong);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
         h1 {
-            margin: 0 0 10px;
-            font-size: clamp(2.2rem, 4vw, 3.1rem);
-            font-weight: 800;
-            letter-spacing: -0.04em;
+            margin: 0;
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            line-height: 0.96;
+            letter-spacing: -0.08em;
         }
 
         .subtitle {
-            margin: 0;
+            margin: 10px 0 0;
             color: var(--muted);
-            font-size: 1.05rem;
+            font-size: 1.04rem;
+        }
+
+        .theme-toggle {
+            border: 1px solid var(--card-border);
+            background: var(--panel);
+            color: var(--text);
+            border-radius: 999px;
+            padding: 11px 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-1px);
         }
 
         .search-wrap {
-            max-width: 680px;
-            margin: 0 auto 18px;
+            max-width: 760px;
+            margin: 0 auto 32px;
         }
 
         .search-bar {
             width: 100%;
-            padding: 15px 18px;
-            font-size: 1.05rem;
-            border: 1px solid #d8dde6;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-            color: var(--text-color);
+            padding: 18px 20px;
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            background: var(--panel-soft);
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            box-shadow: var(--shadow);
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .search-bar:focus {
-            outline: none;
-            border-color: rgba(0, 112, 243, 0.4);
-            box-shadow: 0 0 0 4px rgba(0, 112, 243, 0.1);
+            border-color: rgba(212, 175, 102, 0.7);
+            box-shadow: var(--glow);
+        }
+
+        .category-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 auto 28px;
+            max-width: 1100px;
+        }
+
+        .category-pill {
+            border: 1px solid var(--card-border);
+            background: transparent;
+            color: var(--muted);
+            padding: 10px 14px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .category-pill.active,
+        .category-pill:hover {
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+            border-color: rgba(212, 175, 102, 0.28);
+            box-shadow: var(--glow);
         }
 
         .catalog-meta {
-            max-width: 1200px;
-            margin: 0 auto 22px;
+            max-width: 1100px;
+            margin: 0 auto 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 16px;
             color: var(--muted);
-            font-size: 0.96rem;
+            font-size: 0.95rem;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 26px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
         .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 18px;
-            box-shadow: var(--shadow);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            min-height: 100%;
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
 
         .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 16px 28px rgba(15, 23, 42, 0.1);
+            transform: translateY(-4px);
+            border-color: rgba(212, 175, 102, 0.25);
+            box-shadow: 0 24px 52px rgba(0, 0, 0, 0.28);
         }
 
-        .category {
-            display: inline-block;
-            margin-bottom: 10px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
+        .product-figure {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            background: linear-gradient(135deg, var(--tone-1), var(--tone-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.92);
+            font-weight: 800;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: var(--accent);
+            padding: 18px;
+            font-size: clamp(0.7rem, 1vw, 0.85rem);
+            text-align: center;
         }
 
-        .card h3 {
+        .product-figure::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(0,0,0,0.12));
+        }
+
+        .product-figure span {
+            position: relative;
+            z-index: 1;
+            max-width: 80%;
+            text-shadow: 0 8px 22px rgba(0, 0, 0, 0.24);
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            padding: 18px 18px 20px;
+        }
+
+        .category-badge {
+            display: inline-flex;
+            align-self: flex-start;
+            margin-bottom: 12px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .product-title {
             margin: 0;
-            font-size: 1.08rem;
+            font-size: 1.1rem;
             line-height: 1.45;
-            color: var(--text-color);
+            color: var(--text);
         }
 
         .price-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 14px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 18px;
         }
 
         .price {
-            font-size: 1.32rem;
+            font-size: 1.3rem;
             font-weight: 800;
-            color: var(--text-color);
+            letter-spacing: -0.04em;
+            color: var(--text);
         }
 
         .buy-btn {
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            color: #111;
             border: none;
-            color: #fff;
+            border-radius: 12px;
             padding: 10px 16px;
-            border-radius: 10px;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: background 0.2s ease, transform 0.2s ease;
+            transition: transform 0.2s ease, filter 0.2s ease;
+            box-shadow: 0 10px 20px rgba(212, 175, 102, 0.2);
         }
 
         .buy-btn:hover {
-            background: var(--accent-dark);
             transform: translateY(-1px);
+            filter: brightness(1.08);
         }
 
         .empty-state {
             grid-column: 1 / -1;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px dashed #d7dbe2;
-            border-radius: 14px;
-            padding: 28px 18px;
+            background: var(--panel);
+            border: 1px dashed var(--card-border);
             color: var(--muted);
+            text-align: center;
+            border-radius: 20px;
+            padding: 28px 18px;
             font-size: 1rem;
         }
 
-        @media (max-width: 640px) {
-            .page {
-                padding-top: 30px;
+        @media (max-width: 768px) {
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .catalog-meta {
@@ -196,10 +329,14 @@
 </head>
 <body>
     <div class="page">
-        <header>
-            <h1>The Jitney</h1>
-            <p class="subtitle">Independent Sovereign Storefront & Catalog</p>
-        </header>
+        <div class="topbar">
+            <div class="brand-block">
+                <span class="brand-tag">Curated storefront</span>
+                <h1>The Jitney</h1>
+                <p class="subtitle">Independent Sovereign Storefront & Catalog</p>
+            </div>
+            <button id="themeToggle" class="theme-toggle" type="button">Luxury Dark</button>
+        </div>
 
         <div class="search-wrap">
             <input
@@ -210,6 +347,8 @@
                 placeholder="Search 500+ items (e.g., earbuds, cookware, tv, apparel)..."
             >
         </div>
+
+        <div id="categoryBar" class="category-bar" aria-label="Category filters"></div>
 
         <div class="catalog-meta">
             <span id="catalogCount">0 items</span>
@@ -238,19 +377,61 @@
             { handle: "usadrop-thermal-winter-gloves", title: "Touchscreen-Compatible Thermal Winter Gloves", category: "Accessories", vendor: "USAdrop", price: "14.99", sku: "USA-GLV-THRM", tags: "accessories, winter, tech" }
         ];
 
+        const categoryPalette = {
+            "Cell Phone Accessories": ["#4f46e5", "#7c3aed"],
+            "Electronics": ["#1d4ed8", "#0891b2"],
+            "Electronics & Home": ["#0f766e", "#14b8a6"],
+            "Apparel & Loungewear": ["#d97706", "#f59e0b"],
+            "Apparel & Basics": ["#be185d", "#ec4899"],
+            "Apparel & Outerwear": ["#a16207", "#f59e0b"],
+            "Accessories": ["#64748b", "#94a3b8"]
+        };
+
         const catalogGrid = document.getElementById('catalogGrid');
         const catalogCount = document.getElementById('catalogCount');
         const catalogStatus = document.getElementById('catalogStatus');
+        const categoryBar = document.getElementById('categoryBar');
         const searchBox = document.getElementById('searchBox');
+        const themeToggle = document.getElementById('themeToggle');
 
-        function escapeHtml(value) {
-            return String(value)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
+        let activeCategory = 'All';
+        let isLightTheme = false;
+
+        function getCategoryTones(category) {
+            return categoryPalette[category] || ['#7c3aed', '#1d4ed8'];
         }
+
+        function renderCategoryFilters() {
+            const categories = ['All', ...new Set(catalogData.map((product) => product.category))];
+            categoryBar.innerHTML = '';
+
+            categories.forEach((category) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'category-pill' + (category === activeCategory ? ' active' : '');
+                button.textContent = category;
+                button.addEventListener('click', () => {
+                    activeCategory = category;
+                    renderCategoryFilters();
+                    filterCatalog();
+                });
+                categoryBar.appendChild(button);
+            });
+        }
+
+        function updateThemeLabel() {
+            themeToggle.textContent = isLightTheme ? 'Luxury Light' : 'Luxury Dark';
+        }
+
+        function applyTheme() {
+            document.body.classList.toggle('light-mode', isLightTheme);
+            updateThemeLabel();
+        }
+
+        themeToggle.addEventListener('click', () => {
+            isLightTheme = !isLightTheme;
+            applyTheme();
+        });
 
         function displayCatalog(items) {
             catalogGrid.innerHTML = '';
@@ -266,14 +447,26 @@
             }
 
             items.forEach((item) => {
+                const tones = getCategoryTones(item.category);
+
                 const card = document.createElement('article');
                 card.className = 'card';
+                card.style.setProperty('--tone-1', tones[0]);
+                card.style.setProperty('--tone-2', tones[1]);
 
-                const category = document.createElement('div');
-                category.className = 'category';
-                category.textContent = item.category;
+                const figure = document.createElement('div');
+                figure.className = 'product-figure';
+                figure.innerHTML = '<span>' + (item.category || 'Featured').replace(/&/g, ' & ') + '</span>';
+
+                const body = document.createElement('div');
+                body.className = 'card-body';
+
+                const badge = document.createElement('div');
+                badge.className = 'category-badge';
+                badge.textContent = item.category;
 
                 const title = document.createElement('h3');
+                title.className = 'product-title';
                 title.textContent = item.title;
 
                 const priceRow = document.createElement('div');
@@ -311,10 +504,12 @@
 
                 priceRow.appendChild(price);
                 priceRow.appendChild(buyButton);
+                body.appendChild(badge);
+                body.appendChild(title);
+                body.appendChild(priceRow);
 
-                card.appendChild(category);
-                card.appendChild(title);
-                card.appendChild(priceRow);
+                card.appendChild(figure);
+                card.appendChild(body);
                 catalogGrid.appendChild(card);
             });
 
@@ -322,12 +517,15 @@
             catalogCount.textContent = `${items.length} ${itemLabel}`;
             catalogStatus.textContent = searchBox.value.trim()
                 ? `Filtered by "${searchBox.value.trim()}"`
-                : 'Showing all products';
+                : activeCategory === 'All'
+                    ? 'Showing all products'
+                    : `Showing ${activeCategory}`;
         }
 
         function filterCatalog() {
             const query = searchBox.value.trim().toLowerCase();
             const filtered = catalogData.filter((item) => {
+                const matchesCategory = activeCategory === 'All' || item.category === activeCategory;
                 const searchableText = [
                     item.title,
                     item.category,
@@ -336,13 +534,16 @@
                     item.sku
                 ].join(' ').toLowerCase();
 
-                return searchableText.includes(query);
+                const matchesSearch = !query || searchableText.includes(query);
+                return matchesCategory && matchesSearch;
             });
 
             displayCatalog(filtered);
         }
 
         searchBox.addEventListener('input', filterCatalog);
+        renderCategoryFilters();
+        applyTheme();
         displayCatalog(catalogData);
     </script>
 </body>

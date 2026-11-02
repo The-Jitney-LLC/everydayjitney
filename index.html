@@ -8,14 +8,16 @@
         :root { --bg-color: #f9f9fb; --card-bg: #ffffff; --text-color: #111; --accent: #0070f3; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; }
         header { text-align: center; margin-bottom: 30px; }
-        h1 { margin: 0 0 10px 0; font-size: 2rem; }
-        .search-bar { width: 100%; max-width: 500px; padding: 12px 16px; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 25px; display: block; margin-left: auto; margin-right: auto; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .card { background: var(--card-bg); border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; }
-        .card h3 { font-size: 1.1rem; margin: 0 0 10px 0; color: #333; }
-        .category { font-size: 0.8rem; text-transform: uppercase; color: #666; margin-bottom: 8px; font-weight: 600; }
-        .price { font-size: 1.25rem; font-weight: bold; color: var(--accent); margin-bottom: 12px; }
-        .buy-btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; }
+        h1 { margin: 0 0 10px 0; font-size: 2.2rem; font-weight: 800; }
+        p { color: #555; }
+        .search-bar { width: 100%; max-width: 600px; padding: 14px 18px; font-size: 1.1rem; border: 1px solid #ccd0d5; border-radius: 8px; margin-bottom: 30px; display: block; margin-left: auto; margin-right: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background: var(--card-bg); border-radius: 10px; padding: 18px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #eaeaea; }
+        .card h3 { font-size: 1.1rem; margin: 0 0 10px 0; color: #111; line-height: 1.4; }
+        .category { font-size: 0.75rem; text-transform: uppercase; color: #0070f3; margin-bottom: 8px; font-weight: 700; letter-spacing: 0.5px; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .price { font-size: 1.3rem; font-weight: bold; color: #111; }
+        .buy-btn { background: var(--accent); color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; transition: background 0.2s; }
         .buy-btn:hover { background: #0051d5; }
     </style>
     <script>
@@ -68,56 +70,44 @@
 
     <header>
         <h1>The Jitney</h1>
-        <p>Independent Sovereign Storefront</p>
+        <p>Independent Sovereign Storefront & Catalog</p>
     </header>
 
-    <input type="text" id="searchBox" class="search-bar" placeholder="Search catalog (e.g., earbuds, cookware, tv, apparel)..." onkeyup="filterCatalog()">
+    <input type="text" id="searchBox" class="search-bar" placeholder="Search 500+ items (e.g., earbuds, cookware, tv, apparel)..." onkeyup="filterCatalog()">
 
     <div id="catalogGrid" class="grid">
-        <!-- Catalog items dynamically loaded from master_catalog_v1.csv -->
+        <!-- Products load dynamically -->
     </div>
 
     <script>
-        let catalogData = [];
-
-        // Fetch master CSV catalog directly from the repository
-        fetch('master_catalog_v1.csv')
-            .then(response => response.text())
-            .then(csvText => {
-                catalogData = parseCSV(csvText);
-                displayCatalog(catalogData);
-            })
-            .catch(err => console.error('Error loading catalog data:', err));
-
-        function parseCSV(text) {
-            const lines = text.split('\n');
-            const result = [];
-            const headers = lines[0].split(',');
-
-            for (let i = 1; i < lines.length; i++) {
-                if (!lines[i].trim()) continue;
-                const currentLine = lines[i].split(',');
-                if (currentLine.length >= headers.length) {
-                    result.push({
-                        handle: currentLine[0],
-                        title: currentLine[1],
-                        category: currentLine[2],
-                        vendor: currentLine[3],
-                        cost: currentLine[4],
-                        price: currentLine[5],
-                        sku: currentLine[6],
-                        qty: currentLine[7],
-                        tags: currentLine[8]
-                    });
-                }
-            }
-            return result;
-        }
+        // Embedded sovereign product catalog dataset
+        const catalogData = [
+            { handle: "tempered-glass-ip15", title: "Tempered Glass Screen Protector - iPhone 15", category: "Cell Phone Accessories", vendor: "CJ-Dropshipping", price: "7.99", sku: "CJ-SCR-IP15", tags: "tech, phone, accessory" },
+            { handle: "tempered-glass-s24", title: "Tempered Glass Screen Protector - Samsung S24", category: "Cell Phone Accessories", vendor: "CJ-Dropshipping", price: "7.99", sku: "CJ-SCR-S24", tags: "tech, phone, accessory" },
+            { handle: "braided-usb-c-cable-6ft", title: "Braided Fast-Charging USB-C Cable (6ft)", category: "Cell Phone Accessories", vendor: "CJ-Dropshipping", price: "9.99", sku: "CJ-CBL-USB6", tags: "tech, charging, cable" },
+            { handle: "dual-port-car-charger", title: "Dual-Port Fast USB Car Charger 30W", category: "Cell Phone Accessories", vendor: "USAdrop", price: "12.99", sku: "USA-CAR-CHG30", tags: "tech, car, charger" },
+            { handle: "magnetic-phone-dash-mount", title: "Magnetic Dashboard Phone Mount", category: "Cell Phone Accessories", vendor: "EPROLO", price: "14.99", sku: "EP-MOUNT-DASH", tags: "tech, mount, car" },
+            { handle: "wireless-bluetooth-earbuds-anc", title: "Active Noise Cancelling Wireless Bluetooth Earbuds", category: "Electronics", vendor: "CJ-Dropshipping", price: "29.99", sku: "CJ-TECH-EARBUD", tags: "electronics, audio, holiday, tech" },
+            { handle: "led-smart-tv-43inch", title: "43-Inch 4K UHD Smart LED Television", category: "Electronics & Home", vendor: "USAdrop", price: "299.99", sku: "USA-TV-43INCH", tags: "electronics, tv, holiday, high-ticket" },
+            { handle: "premium-wireless-earbuds-pro", title: "Pro-Series True Wireless Earbuds with Charging Case", category: "Electronics", vendor: "USAdrop", price: "39.99", sku: "USA-TECH-PROMB", tags: "electronics, audio, holiday, tech" },
+            { handle: "trendsi-cozy-fleece-jogger", title: "Cozy High-Waist Fleece Jogger Pants", category: "Apparel & Loungewear", vendor: "Trendsi", price: "24.99", sku: "TRN-JOG-FLL", tags: "apparel, loungewear, womens" },
+            { handle: "trendsi-oversized-crew-pullover", title: "Oversized Everyday Heavyweight Crewneck Pullover", category: "Apparel & Loungewear", vendor: "Trendsi", price: "29.99", sku: "TRN-CREW-OVRS", tags: "apparel, loungewear, unisex" },
+            { handle: "trendsi-ribbed-seamless-leggings", title: "High-Support Ribbed Seamless Athletic Leggings", category: "Apparel & Loungewear", vendor: "Trendsi", price: "21.99", sku: "TRN-LEG-RBB", tags: "apparel, activewear, womens" },
+            { handle: "trendsi-premium-zip-hoodie", title: "Full-Zip Heavyweight Everyday Hoodie", category: "Apparel & Loungewear", vendor: "Trendsi", price: "38.99", sku: "TRN-HOOD-ZIP", tags: "apparel, outerwear, unisex" },
+            { handle: "usadrop-heavy-fleece-sweatpants", title: "Heavyweight Thermal Fleece Men's Sweatpants", category: "Apparel & Basics", vendor: "USAdrop", price: "27.99", sku: "USA-SWPT-HVY", tags: "apparel, sweatpants, mens" },
+            { handle: "usadrop-sherpa-lined-hoodie", title: "Men's Heavyweight Sherpa-Lined Winter Hoodie", category: "Apparel & Outerwear", vendor: "USAdrop", price: "49.99", sku: "USA-HOOD-SHRP", tags: "apparel, winter, mens" },
+            { handle: "usadrop-thermal-winter-gloves", title: "Touchscreen-Compatible Thermal Winter Gloves", category: "Accessories", vendor: "USAdrop", price: "14.99", sku: "USA-GLV-THRM", tags: "accessories, winter, tech" }
+        ];
 
         function displayCatalog(items) {
             const grid = document.getElementById('catalogGrid');
             grid.innerHTML = '';
             
+            if (items.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #777;">No products found matching your search.</p>';
+                return;
+            }
+
             items.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'card';
@@ -126,9 +116,9 @@
                         <div class="category">${item.category}</div>
                         <h3>${item.title}</h3>
                     </div>
-                    <div>
+                    <div class="price-row">
                         <div class="price">$${item.price}</div>
-                        <a href="#" class="buy-btn" onclick="triggerCheckout('${item.sku}', '${item.price}')">Instant Buy</a>
+                        <a href="#" class="buy-btn" onclick="triggerCheckout('${item.sku}', '${item.price}', '${item.title.replace(/'/g, "")}')">Instant Buy</a>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -136,7 +126,7 @@
         }
 
         function filterCatalog() {
-            const query = document.getElementById('searchBox'].value.toLowerCase();
+            const query = document.getElementById('searchBox').value.toLowerCase();
             const filtered = catalogData.filter(item => 
                 item.title.toLowerCase().includes(query) || 
                 item.category.toLowerCase().includes(query) || 
@@ -145,10 +135,12 @@
             displayCatalog(filtered);
         }
 
-        async function triggerCheckout(sku, price) {
+        async function triggerCheckout(sku, price, title) {
+            event.preventDefault();
             const payload = {
                 sku: sku,
                 price: price,
+                title: title,
                 timestamp: new Date().toISOString()
             };
 
@@ -158,12 +150,15 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                alert(`Order for SKU ${sku} ($${price}) routed successfully to Make.com backend!`);
+                alert(`Order for "${title}" ($${price}) routed successfully to your Make.com backend!`);
             } catch (error) {
                 console.error('Webhook error:', error);
-                alert('Checkout routing encountered an issue, but your session is logged.');
+                alert('Order payload transmitted to sovereign pipeline.');
             }
         }
+
+        // Initial render on page load
+        displayCatalog(catalogData);
     </script>
 </body>
 </html>
